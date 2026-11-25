@@ -1,0 +1,20 @@
+ScaleAI Enterprise Adoption Framework
+Copyright 2026 Shibin Antony and contributors
+
+The following grants apply to original material in this repository.
+
+Documentation and diagrams, including README files, the decision record and
+Markdown runbooks, are licensed under Creative Commons Attribution 4.0
+International (SPDX: CC-BY-4.0). See LICENSE-DOCS for the full terms.
+https://creativecommons.org/licenses/by/4.0/
+
+Software and machine-readable material, including YAML policy templates,
+workflow definitions, scripts, tests, synthetic JSON fixtures, dependency
+declarations and citation metadata, are licensed under the Apache License,
+Version 2.0 (SPDX: Apache-2.0). See LICENSE-CODE for the full terms.
+https://www.apache.org/licenses/LICENSE-2.0
+
+Executable snippets embedded in documentation may also be used under
+Apache-2.0. LICENSE-CODE and LICENSE-DOCS reproduce their publishers' license
+texts. References to third-party material carry the rights of their respective
+owners. Consult NOTICE.md for attribution and scope.

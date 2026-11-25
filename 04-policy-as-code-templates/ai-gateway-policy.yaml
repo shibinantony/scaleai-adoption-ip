@@ -1,0 +1,75 @@
+# Gateway adapter contract for the first production workflow. See README.md for binding and acceptance checks.
+schema: scaleai.gateway.v1
+policy_id: invoice-exception-draft-v1
+default_decision: deny
+workflow:
+  id: invoice-exception-draft
+  output: internal_draft_with_citations
+  authorized_release_actor: named_accounts_payable_reviewer
+  on_missing_context_or_dependency: hold_for_human_review
+identity:
+  transport: mutual_tls
+  token_validation: [trusted_issuer_signature, permitted_algorithm, expiry, not_before, gateway_audience]
+  required_verified_claims: [subject, tenant_id, workload_id, scope]
+  caller_supplied_tenant_header: discard
+  policy_lookup_key: [verified_tenant_id, verified_workload_id, workflow_id]
+  missing_or_conflicting_binding: deny
+ingress:
+  requests_per_60_seconds_per_tenant_and_workload: 30
+  max_concurrent_per_tenant_and_workload: 4
+  over_limit_http_status: 429
+  max_request_bytes: 65536
+data_handling:
+  permitted_input_fields: [exception_code, invoice_line_reference]
+  prohibited_fields: [bank_account_number, payment_card_number, contact_details, credentials]
+  before_cache_retrieval_or_inference: [validate_field_allowlist, tokenize_invoice_reference, redact_prohibited_values, rescan]
+  findings_after_redaction_or_scanner_unavailable: deny
+  retrieval_filters: [verified_tenant_id, subject_entitlements, approved_corpus_version]
+  server_resolved_context:
+    invoice_order_receipt: current_entitlement_checked_snapshot_via_invoice_exception.read
+    reconciliation_fields: [invoice_amount, invoice_currency, purchase_order_amount, order_currency, ordered_quantity, received_quantity, receipt_unit, order_unit]
+    on_missing_conflicting_or_incomparable_financial_records: hold_for_human_review
+    approved_policy_excerpt: entitlement_filtered_approved_corpus
+    passage_binding: [source_id, source_version, passage_id, content_digest]
+    caller_supplied_context_or_stale_unverified_reference: deny
+  training_on_client_data: prohibited
+  public_egress: deny
+  model_provider_telemetry: disabled
+routing:
+  endpoint_registry: signed_client_owned_private_service_catalog
+  endpoint_admission: [inside_client_boundary, approved_model_digest, no_training, no_provider_retention]
+  selector: approved_workflow_stage_from_server_side_state
+  routine_classification: private_domain_slm
+  complex_grounded_drafting: private_approved_llm
+  unsupported_route_or_unavailable_model: hold_for_human_review
+  route_retries: 0
+  air_gapped_profile: local_registry_models_identity_and_evidence_only
+budget:
+  input_tokens_per_request_max: 4096
+  output_tokens_per_request_max: 512
+  tokens_per_tenant_and_workflow_per_utc_day: 250000
+  reservation: atomic_input_plus_max_output_before_dispatch
+  reconciliation: actual_usage_after_completion_retain_reservation_on_unknown_usage
+  exhausted_or_meter_unavailable: hold_for_human_review
+cache:
+  mode: disabled
+  scope_for_future_approved_use: [tenant_id, entitlement_digest, workflow_id, model_digest, corpus_digest, policy_digest, locale]
+  semantic_cache_eligible_data: shared_reference_text_approved_for_this_tenant_only
+  individualized_response_storage: prohibited
+tool_access:
+  protocol: MCP
+  allow: [invoice_exception.read, policy_excerpt.read]
+  binding: short_lived_audience_bound_token_with_tenant_subject_record_scope
+  max_tool_calls_per_request: 2
+  payment_or_ledger_write: deny
+  unlisted_tool_or_arguments_outside_schema: deny
+output_guard:
+  must_pass: [draft_schema_valid, citations_match_authorized_source_version_passage_and_digest, sensitive_value_scan_clear]
+  on_failure: abstain_and_queue_for_human_review
+  financial_action: named_reviewer_in_separate_business_system
+audit:
+  location: client_owned_append_only_store_inside_client_boundary
+  encryption: client_managed_key
+  allowed_event_fields: [trace_id, tenant_key, pseudonymous_reviewer_key, workflow_id, route_id, policy_digest, model_digest, decision, reason_code, input_tokens, output_tokens, duration_ms, timestamp_utc]
+  raw_prompts_responses_and_identifiers: prohibited
+  delivery_failure: hold_before_returning_draft

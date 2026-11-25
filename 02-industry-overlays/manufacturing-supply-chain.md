@@ -1,0 +1,30 @@
+# Manufacturing and supply chain
+
+The plant manager can authorize a pilot on one asset family. A maintenance planner receives an advisory inspection proposal derived from historical condition data. A buyer can later receive a draft parts requisition linked to an approved work order. The plant control system, safety interlocks, maintenance authorization and purchasing limits retain their existing decision rights.
+
+## Plant boundary and authority
+
+Map the historian, industrial demilitarized zone (DMZ), client analytics enclave and computerized maintenance management system (CMMS) on the site’s approved network drawing. NIST SP 800-82 Rev. 3 provides guidance for protecting operational technology (OT) while preserving safety, availability and reliability. At US sites, the safety manager determines where OSHA’s control-of-hazardous-energy standard applies to servicing or maintenance. The assistant may attach the identifier of an approved procedure. Authorized personnel select and execute that procedure. [NIST OT security guide](https://csrc.nist.gov/pubs/sp/800/82/r3/final) · [OSHA 29 CFR 1910.147](https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.147)
+
+## Immediate priority · Day 0–90
+
+Select a site with independent sensor alerts, labeled maintenance history and a documented manual planning queue. Run the advisory beside the current process. The following are starting release criteria for the plant manager, safety manager and OT owner to ratify for that asset family.
+
+| Control objective | Implementation and evidence | Pass threshold | Blast radius if omitted |
+| --- | --- | --- | --- |
+| Keep the analytics service outside plant control | Export approved historian fields outward through the plant DMZ using a one-way transfer where required by site design. Place inference, access logs and keys in the client’s isolated analytics enclave. Disable third-party training and egress. Inspect effective firewall rules, service identities and data-flow evidence offline with the OT owner. | Zero reachable controller, safety or engineering interfaces and zero control credentials in the analytics enclave. Every data transfer matches the approved site/tenant/asset manifest. OT owner signs the configuration evidence before connection. | A corporate analytics incident can reach equipment that controls a physical process. |
+| Suppress advice on stale or incompatible readings | Bind timestamp, asset serial, sensor revision and engineering units. Reject missing, duplicated or out-of-order intervals. For the pilot’s five-minute batch feed, suppress advice when the newest observation is more than ten minutes old. | All 60 stale, unit-mismatch and cross-asset fixtures suppress the proposal. For ≥200 valid intervals, p95 time from receipt of batch to proposal ≤60 seconds. Count overdue work as a latency breach. | A planner can schedule an inspection against the wrong asset or rely on conditions that have changed. |
+| Demonstrate reliability without altering existing alarms | Replay time-ordered histories held out by asset and date. Have reliability engineers label true inspection events and actionable proposals. Record operating regime and the site-approved lead-time window before evaluation. | With ≥50 labeled events, actionable recall ≥90% (events detected within the lead-time window / labeled events). With ≥100 proposals, precision ≥80% (actionable / issued). Zero suppressed existing alarms and zero generated work instructions replacing an approved procedure. | Missed events can extend downtime while excess alerts consume limited maintenance capacity. |
+
+**Release decision.** The OT owner signs the topology, reliability signs the holdout results, and the planner accepts proposals through the normal CMMS queue. A missing safety boundary, stale-data escape or cross-asset proposal closes the analytical feed and withdraws unreviewed drafts. The plant continues using its existing alarm and planning systems.
+
+## Ongoing priority · Day 90+
+
+| Control objective | Implementation and evidence | Pass threshold | Blast radius if omitted |
+| --- | --- | --- | --- |
+| Prevent repeated orders and unauthorized supplier commitments | A restricted agent reads authorized work orders and writes draft requisitions for approved parts. Match supplier, plant, part and quantity against the controlled catalog. Require buyer approval and deduplicate using work-order and line-item identifiers. | Across 100 simulated retries and vendor/part substitutions, zero duplicate or unauthorized requisitions. All purchasing commitments require the existing procurement approval. | A retry can reserve scarce stock repeatedly or create a purchase against an unapproved supplier. |
+| Keep site-specific drift visible during expansion | Review each asset family by operating regime monthly. Re-run the holdout after sensor replacement or maintenance policy change. Compare alert volume with the planner’s signed capacity. | Reapply the pilot precision and recall floors at their original sample sizes in each new regime. Five consecutive shifts above queue capacity suspend new proposals. Undersampled regimes stay in shadow. | A fleet-wide average can disguise a failed sensor revision or overwhelm planners at one site. |
+
+Finance reports cost per **planner-accepted work proposal**, including inference, historian replication, secure infrastructure, planner review and rejected-proposal handling. Divide the monthly cost by unique accepted proposals. For example, $1,800 / 120 accepted proposals = $15 per proposal. Separately report verified actionable findings per inspection and downtime observed against a comparable asset cohort. The plant controller approves any avoided-downtime attribution. A zero denominator or a quality gate failure holds the next-site decision.
+
+Use the [immediate runbook](../03-client-execution-kit/day-0-90-immediate-runbook.md) to record site approval boundaries and the [ongoing runbook](../03-client-execution-kit/day-90-plus-ongoing-runbook.md) for change-triggered retesting.

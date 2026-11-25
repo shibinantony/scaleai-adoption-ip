@@ -1,0 +1,22 @@
+name: Policy kit checks
+"on": [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  synthetic-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.11"
+      - name: Install YAML parser
+        run: python -m pip install -r 04-policy-as-code-templates/requirements.txt
+      - name: Run synthetic decision and refusal checks
+        working-directory: 04-policy-as-code-templates
+        run: |
+          python evaluate_release.py --demo
+          python -B -m unittest -v test_release

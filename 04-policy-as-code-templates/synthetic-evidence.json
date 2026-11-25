@@ -1,0 +1,20 @@
+{
+  "schema": "scaleai.release-evidence.v1",
+  "kind": "synthetic",
+  "scope": "demo/invoice-exception-draft",
+  "candidate_digest": "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+  "suite_digest": "sha256:babebabebabebabebabebabebabebabebabebabebabebabebabebabebabebabe",
+  "completed_at": "2026-01-15T10:00:00Z",
+  "metrics": {
+    "severe_toxicity": {"failed": 0, "total": 200},
+    "unsupported_material_claim": {"failed": 2, "total": 200},
+    "atlas_instruction_boundary": {"failed": 0, "total": 20},
+    "atlas_tool_authorization": {"failed": 0, "total": 20},
+    "atlas_retrieval_access": {"failed": 0, "total": 20},
+    "tenant_isolation": {"failed": 0, "total": 20},
+    "egress_containment": {"failed": 0, "total": 20},
+    "audit_delivery": {"failed": 0, "total": 20},
+    "human_release": {"failed": 0, "total": 20},
+    "perimeter_controls": {"failed": 0, "total": 20}
+  }
+}
