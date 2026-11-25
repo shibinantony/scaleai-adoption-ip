@@ -1,27 +1,29 @@
-# The investment decision
+# Should we fund this workflow?
 
-Fund one workflow whose owner controls the queue, the reviewer roster and the outcome measure. Release funding in stages. Extend the deployment only when the sponsor can name what improved, who can stop the service and what a second tenant would cost to serve.
+For an invoice-exception pilot, ask Finance to bring the cost of resolving a disputed invoice today and Operations to bring a case an analyst recently had to finish by hand. Walk through that case together. Where would a draft have saved time? Which checks would the analyst still have had to do? Those answers determine what belongs in the business case.
 
-## Board scorecard
+## What the board should see
 
-Each cell is a question the named executive can answer from the evidence pack. Set targets against one service, tenant, population and observation window. Break down measures by material case type before comparing results.
+Choose one service and tenant, and report the number and types of cases over the same period. Otherwise a queue of simple invoices can make one model look faster or cheaper than another. The table shows what each executive should be able to measure.
 
-| Pillar | CIO · service delivery | CISO · exposure | COO · operating result | CFO · economics |
+| Pillar | CIO · service delivery | CISO · exposure | COO · operations | CFO · cost |
 | --- | --- | --- | --- | --- |
-| Process | Share of eligible cases linked to one end-to-end trace | Share of final actions attributed to an authorized reviewer | Accepted cases / eligible cases, reopen rate and queue age | Fully loaded cost per accepted outcome vs. matched manual baseline |
-| Technology | p95 time from request to draft, by model route | Number of routes with unapproved data processing | Drafts with unsupported material claims / reviewed substantive drafts | Separate inference, retrieval and reviewer costs per route |
-| Tools | Requests with complete decision telemetry / total gateway requests | Unredacted restricted fields found in exported telemetry | Share of rejected or timed-out drafts delivered to the manual queue | Spend consumed by retries and cache misses per 1,000 eligible requests |
-| Architecture | Time to restore a signed, known-good deployment | Observed cross-tenant reads and unapproved egress events | Open case IDs successfully reconciled during failover / open cases | Private infrastructure allocation per active tenant and accepted case |
-| Trust and assurance | Candidate releases with current, bound evidence / all release candidates | Open critical control failures and time to suspension | Decisions that can be reconstructed from evidence / sampled decisions | Unclosed assurance actions by due date and funded remediation cost |
+| Process | % of eligible cases traceable from intake to close | % of final actions linked to an authorized reviewer | Cases where a reviewer accepted the assisted outcome, out of all eligible cases. Reopen rate and age of oldest pending case | Full cost per accepted outcome against comparable manual cases |
+| Technology | 95th-percentile time from request to draft, by model route | Number of routes using an unapproved processor | Reviewed drafts with an unsupported material claim, out of all substantive drafts reviewed | Model, retrieval and reviewer cost by route |
+| Tools | % of gateway requests with a complete decision record | Restricted fields found in exported logs | % of rejected or timed-out cases that reach the manual queue | Cost of retries and cache misses per 1,000 eligible requests |
+| Architecture | Time to restore an approved deployment | Cross-tenant reads and connections to unapproved destinations | Open cases accounted for after failover, out of all open cases | Private infrastructure cost per active tenant and per accepted case |
+| Trust and assurance | % of proposed releases with current evidence for that exact version | Open critical failures and time taken to suspend service | Decisions an independent reviewer can reconstruct, out of those sampled | Outstanding assurance actions by due date and the cost of fixing them |
 
-## Decisions and delegated authority
+## Who can say yes, and who can stop the work?
 
-| Decision | Decision right | Evidence and rule for the invoice pilot |
-| --- | --- | --- |
-| Fund discovery | Business sponsor and finance partner | Approve a capped discovery allocation when an accountable owner, eligible queue and manual baseline can be identified. Defer a production commitment until the baseline is measured. |
-| Open a canary | COO authorizes scope after independent assurance, CISO boundary sign-off and CIO operational acceptance | Restrict the first cohort to one tenant, draft-only use and a staffed review queue. Each required automated gate must pass, and operations must demonstrate rollback in ≤15 minutes. |
-| Suspend service | On-call operations may stop traffic immediately. Security leads containment for data events. | One confirmed boundary breach or unauthorized write disables the route. Continue the manual queue, preserve client-owned evidence and reconcile case IDs. |
-| Expand funding | Sponsor accepts residual business risk and finance approves the next tranche | Pilot target is ≥85% assisted acceptance and ≤80% of manual unit cost on ≥200 settled eligible cases, with quality and boundary gates passing. Approve one named new scope and a fresh budget. |
-| Retire | Process owner and platform owner | Route outstanding cases to people, reconcile outcomes, revoke credentials and remove tenant artifacts according to the approved retention schedule. Retain the closure decision. |
+**Discovery.** The business sponsor and finance partner may fund a capped investigation once they can name the owner, the queue and a way to measure current costs. They can decide on production funding after Finance has measured that baseline.
 
-The example pilot's USD 6.00 per accepted assisted outcome clears a USD 6.40 ceiling. Its finance partner would still need evidence of an actual budget reduction to recognize cash savings. A low unit cost cannot authorize data access or override the CISO's boundary decision. [Worked release decision](../03-client-execution-kit/worked-release-decision.md) · [Cost definition](../01-pillar-blueprints/01-process-and-finops.md)
+**First live cases.** The COO can open a small supervised rollout (a canary) for one tenant and one staffed review queue. The service may draft. A person releases the result. Independent assurance verifies the tests, the CISO signs off on data access, and the CIO accepts operational support. All mandatory release checks must pass. Operations must show it can switch open cases to a safe route within 15 minutes.
+
+**An incident during a shift.** On-call operations can suspend the service immediately. One confirmed data-boundary breach or unauthorized write is enough. Security leads containment, and the workflow owner gets the open cases back to analysts. Retain the evidence in client custody and reconcile each case ID.
+
+**More funding.** For the invoice pilot, the board needs at least 200 eligible cases past the seven-day reopen window. Analysts must have accepted at least 85% through the assisted route, and full cost per accepted outcome must be at most 80% of the manual baseline. Quality and access checks must also pass. The sponsor accepts the remaining business risk for one named expansion, and Finance approves its budget.
+
+**Retirement.** The process owner accounts for all open cases. The platform owner revokes credentials and applies the agreed retention schedule to tenant data and records. Keep the joint closure decision.
+
+Finance should distinguish a gain in capacity from a reduction in spending. In the worked example, $6 per accepted assisted case clears the $6.40 ceiling. If the same people are still on payroll, record where their time went. Recognize cash savings when a budget line actually falls. [Worked release decision](../03-client-execution-kit/worked-release-decision.md) · [Cost calculation](../01-pillar-blueprints/01-process-and-finops.md)

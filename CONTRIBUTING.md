@@ -1,7 +1,9 @@
 # Contributing
 
-Open an issue with the workflow, the decision affected and a synthetic example of the current behavior. A control change should identify the owner, enforcement point, measurement window, denominator, evidence and consequence of omission. A source mapping should cite the publisher and edition. A policy change should include evidence that passes and evidence that exercises the changed boundary. [Policy kit](04-policy-as-code-templates/README.md)
+If a control is hard to apply, describe the decision you were trying to make and show what happened with an invented case. A useful change gives the next reader a way to tell whether the control worked.
 
-Keep client identifiers, credentials, evidence stores, invoice text and actual evaluation transcripts in the client's controlled environment. Use invented records in public discussions. For a change to a licence or a risk threshold, explain which downstream users or release decisions are affected.
+For a new or revised control, name the owner and where the check runs. Explain what counts as a pass, how many cases or how much time the measurement covers, what evidence to keep and who is exposed if the check fails. For a standards mapping, cite the publisher and edition.
 
-Submit only work you have authority to contribute. Original contributions use the licence assigned to their file type. [Licence scope](LICENSE)
+A change to a release threshold should come with a case that passes and another that crosses the boundary. Explain which deployments would receive a different decision. A licence change should identify which downstream uses it affects. [Policy kit](04-policy-as-code-templates/README.md)
+
+Use synthetic information in issues and pull requests. Keep actual client identifiers, credentials, invoice text, evaluation transcripts and private evidence references in the client environment. Submit work you have authority to contribute. The repository licence for each file type also applies to contributions. [Licence scope](LICENSE)

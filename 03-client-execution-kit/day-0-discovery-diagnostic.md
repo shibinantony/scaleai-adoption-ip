@@ -1,29 +1,76 @@
 # Day 0 discovery diagnostic
 
-**Use in a 90-minute intake.** The delivery lead brings the process owner, platform engineer, security architect, finance partner and independent risk reviewer together around one named workflow and tenant. Start with a real queue and aggregate baseline counts. Keep client evidence in the client environment. Output a five-pillar profile, a list of blocking gaps with named owners and a decision on the next tranche of work.
+Use this 90-minute meeting to decide how far one tenant's workflow can proceed. The delivery lead facilitates. Invite the process owner, a platform engineer, a security architect, a finance partner and an independent risk reviewer. Ask them to bring the existing case queue, aggregate baseline counts and links to evidence in the client environment.
 
-## How to score a workflow
+## Open with one case
 
-Each row has five cumulative evidence checks in increasing order of maturity. Mark each check **verified** only when a reviewer can locate a dated artifact for this scope and its owner. A verbal commitment earns no credit. Count the consecutive verified checks from the left, stopping at the first gap. Record that count as evidence depth (0–5). The pillar score is the higher of 1 and evidence depth. Flag a depth of zero as **unverified**. Record later verified checks as strengths even when an earlier gap caps the score.
+Ask the process owner to trace a recent case from arrival to final decision. Establish who can see it, who decides it and where it goes when the service is unavailable. Write the tenant, workflow and intended use at the top of the meeting record. Score only what the group can verify for that scope.
 
-| Pillar | 1 · Identify | 2 · Design | 3 · Demonstrate | 4 · Operate | 5 · Expand |
-| --- | --- | --- | --- | --- | --- |
-| Process | Can the owner show the existing case queue and decision right? | Are the baseline, eligible cohort, acceptance definition and budget recorded? | Does a sampled case show human disposition and manual fallback? | Do two settled cohorts reconcile cost, acceptance and reopens? | Has finance checked realized capacity or margin after a scope expansion? |
-| Technology | Is the inference and retrieval inventory versioned? | Does the route specify data class, authorized sources and budget? | Does a frozen test set demonstrate grounding, abstention and routing? | Can the owner show monitored drift and a tested rollback bundle? | Has a replacement model or bounded agent step passed a paired evaluation? |
-| Tools | Can operators locate the gateway and the client-owned event sink? | Are identity, redaction, rate and cost rules configured with owners? | Has a private rehearsal shown fail-closed rules and delivery of audit events? | Can on-call staff reconcile dropped events and repeat a guardrail drill? | Are evaluations, configuration changes and incident receipts linked across two approved scopes? |
-| Architecture | Is the tenant boundary and each data flow recorded? | Are keys, retrieval, cache, identities, egress and tools restricted by design? | Do private tests deny disallowed access and preserve the first tenant’s manual route? | Has the team restored an approved deployment with its policies and records? | Has an isolation and revocation drill passed with a second synthetic tenant? |
-| Trust and assurance | Are the intended use, accountable executive and assessor named? | Is there a signed risk and obligation register with applicable controls? | Has an independent reviewer verified candidate-bound evidence and the stop procedure? | Are incidents, changes, overrides and due corrective actions reviewed on schedule? | Can an internal auditor reconstruct an outcome and verify closure of a corrective action? |
+## Ask the 25 questions
 
-There are 25 checks. Report the five pillar scores separately and their sum (5–25). The total helps allocate discovery effort. A single hard stop below holds the affected release at any score.
+Read each pillar in order. Question 1 asks the team to identify what exists. Questions 2 through 5 cover design, demonstration, operation and expansion. For each answer, record the owner and a dated artifact that the reviewer can open. Leave an unsupported answer unverified.
 
-| Diagnostic disposition | Decision and owner |
+### Process
+
+1. Can the owner show the current case queue and identify who can make the final decision?
+2. Where are the baseline, eligible cases, acceptance definition and budget recorded?
+3. Does a sampled case show how a human makes the decision and how the team falls back to manual handling?
+4. Can Finance reconcile costs, accepted cases and reopens for two groups of cases whose reopen windows have closed?
+5. After an expansion, has Finance checked where released capacity went or how much margin improved?
+
+### Technology
+
+1. Can the engineer identify the versions of the models and retrieval systems in use?
+2. For each route, where are the permitted data class, authorized sources and budget recorded?
+3. Does a frozen test set show when the service can ground an answer in its sources, when it should abstain and which model it selects?
+4. Can the owner show drift monitoring and a tested set of versions and policies to restore?
+5. Has a replacement model or a bounded agent step passed a comparison on the same cases as the approved version?
+
+### Tools
+
+1. Can operators locate the gateway and the client-owned store for audit events?
+2. Are identity, redaction, rate and cost rules configured, each with an owner?
+3. Has a private rehearsal shown that a failed check blocks the request and delivers its audit event?
+4. Can on-call staff account for dropped events and repeat a guardrail drill?
+5. Can the reviewer trace evaluations, configuration changes and incident records across two approved scopes?
+
+### Architecture
+
+1. Is the tenant boundary documented, including each flow of data across it?
+2. Does the design restrict keys, retrieval, cache access, identities, outbound connections and tools?
+3. Do private tests deny disallowed access while keeping the first tenant's manual route available?
+4. Has the team restored an approved deployment together with its policies and records?
+5. Has the team passed an isolation and access-revocation drill with a second synthetic tenant?
+
+### Trust and assurance
+
+1. Are the intended use, accountable executive and assessor named?
+2. Is there a signed register of risks, applicable obligations and controls?
+3. Has an independent reviewer verified that the evidence belongs to the candidate under review and that the stop procedure works?
+4. Does the team review incidents, changes, overrides and due corrective actions on schedule?
+5. Can an internal auditor trace one outcome back to its evidence and verify that a corrective action was closed?
+
+## Score each pillar
+
+Count consecutive verified answers starting at question 1. Stop at the first gap. This count, from 0 to 5, is the **evidence depth**. Use the depth as the pillar score, with a minimum score of 1. At depth zero, write **1, unverified** so that nobody mistakes the scoring floor for evidence. Note any later verified answers as strengths to revisit after the gap closes.
+
+Record all five pillar scores and their sum, from 5 to 25. Before considering the total, check for a production stop. Security or the process owner blocks production on any of these findings.
+
+- A missing lawful purpose or data permission, unbounded outbound access or confirmed cross-tenant disclosure.
+- An unauthorized action, third-party training on client data or missing client custody of audit records.
+- No human decision-maker or no working manual fallback.
+
+Name a person to correct the finding, give it a due date and retest the affected boundary. A high total cannot clear it.
+
+| Result after the stop check | Decision |
 | --- | --- |
-| Total 5–12 or any pillar unverified | Sponsor funds scoped discovery and control design. Keep production traffic on the manual route. |
-| Total 13–19 and all pillars have evidence | Delivery lead may request shadow evaluation in the approved environment. A supervised canary requires every pillar ≥3, all release gates passing and the named approvals. |
-| Total 20–25 with a pillar below 3 | Delivery lead keeps work in shadow until each lagging pillar demonstrates its controls. An unverified pillar returns the workflow to discovery. |
-| Total 20–25 and no pillar below 3 | Steering group can consider expansion after two settled weekly cohorts, verified capacity and fresh scope-specific evidence. |
-| Missing lawful purpose or data permission, unbounded egress, cross-tenant disclosure, unauthorized action, third-party training, missing client audit custody, missing human or manual fallback | Security or the process owner blocks production use, names a remediator, records a due date and retests the specific boundary. The score cannot override this decision. |
+| Any unverified pillar, or total 5–12 | The sponsor funds discovery and control design. Production stays with the manual team. |
+| Total 13–19, with evidence for every pillar | The delivery lead may request an approved shadow comparison, where the team generates drafts while staff complete the real cases. A supervised canary can be considered only when every pillar scores at least 3, all release gates pass and the named approvers sign. |
+| Total 20–25, with a verified pillar below 3 | Stay in shadow while the owner demonstrates the missing controls. |
+| Total 20–25, every pillar at least 3 | The steering group may consider expansion after two settled weekly cohorts, verified capacity and fresh evidence for the proposed scope. |
 
-**Worked intake.** A synthetic invoice workflow verifies four, three, two, three and three consecutive checks respectively. Record **4 / 3 / 2 / 3 / 3 = 15/25**. Tools has a design record but lacks an observed deny-and-audit receipt. The delivery lead can schedule shadow evaluation after environment approval. The platform owner must demonstrate the receipt before the COO can consider a canary.
+## Close with a decision someone can act on
 
-**Meeting close.** For each failed check, record workflow, check number, finding, artifact reference, accountable individual, due date, retest and decision. For example, the invoice pilot’s Tools 3 finding links the missing audit receipt to design record GW-07. The platform lead owns a day 14 retest with the sink disabled. The delivery lead keeps the canary on hold. Publish the profile, decision and next review date in the client risk register. [Master matrix](../00-executive-overview/5x2-master-matrix.md) · [Immediate runbook](day-0-90-immediate-runbook.md)
+In the synthetic invoice pilot, the scores are **4 / 3 / 2 / 3 / 3 = 15/25**. Tools has a design record, GW-07, but nobody has seen the gateway deny a request and account for it. The delivery lead can schedule an approved shadow comparison. The platform lead owns a day 14 retest with the audit sink disabled. The COO's canary decision waits for that evidence.
+
+For each open check, record the workflow, pillar and question number, finding, artifact reference, accountable individual, due date, retest and release decision. Put the five scores, today's decision and the next review date in the client risk register. [Master matrix](../00-executive-overview/5x2-master-matrix.md) · [Immediate runbook](day-0-90-immediate-runbook.md)

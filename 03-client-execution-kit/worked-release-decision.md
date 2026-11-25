@@ -1,24 +1,29 @@
-# Worked director decision · Finance operations
+# Decision memo · Keep invoice drafting in the current finance queue
 
-**Decision: continue the internal invoice-exception service for one tenant.** This synthetic record shows how a steering group can approve a bounded service and decline a wider rollout at the same meeting. Figures illustrate the framework and do not describe a client deployment.
+**Approve a further 30 days for one finance tenant, one currency and one staffed English-language queue.** The service may draft an explanation for an invoice exception. An accounts-payable analyst checks the sources. Only an authorized employee may close the case or authorize a ledger action. Keep the limits at 200 cases a day and $6,000 in total operating cost for the period.
 
-| Decision field | Example entry |
+This is an illustrative decision using synthetic data. All amounts are in US dollars.
+
+## What Finance can support
+
+Of 1,000 eligible cases, analysts accepted the draft in 900. They finished the other 100 manually. All 1,000 cases cleared the seven-day window for reopening. Two consecutive weekly groups within that total each had 250 eligible cases, 225 accepted drafts and $1,350 in costs.
+
+| What Finance measured | Result |
 | --- | --- |
-| Purpose and authority | Draft a cited explanation of an invoice/order/receipt mismatch for an accounts-payable analyst. One finance tenant, one currency and one staffed English-language queue. Only an authorized employee can close a case or authorize a ledger action. |
-| Candidate and scope | Record FIN-EX-01, revision 7, scope `demo/invoice-exception-draft`. In implementation the controller supplies the immutable candidate digest and the assurance lead supplies the approved suite digest. The public fixture demonstrates this join. |
-| Economic question | Can the team resolve the same case mix with less operating cost while maintaining the approved quality and service levels? Finance sets a ceiling of USD 6.40 per accepted assisted outcome (80% of the USD 8.00 manual baseline). |
-| Cohort | 1,000 eligible cases settled after a seven-day reopen window. 900 assisted drafts accepted, 100 cases closed by the manual route, zero unresolved cases. Two consecutive settled weekly slices included 250 eligible cases each, with 225 accepted in each and USD 1,350 spent in each. |
-| Economics | USD 5,400 total / 900 distinct accepted assisted outcomes = USD 6.00. The full pathway cost per closed case is USD 5.40. Acceptance is 90%. At 1,000 cases/month the difference from the USD 8,000 manual comparator is USD 2,600/month before one-time cost. Finance records released capacity until budget realization is evidenced. |
-| Quality and containment | In the illustrative qualification set, 2/200 substantive drafts contain an unsupported material claim, 0/200 outputs contain severe toxicity, and each of the eight mandatory defensive or operational metrics has 0/20 failures. Boundary and human-approval drills pass. Public CI uses synthetic data to demonstrate the arithmetic. |
-| Operational receipts | A rehearsal redirected all 40 open case IDs exactly once in 12 minutes against a 15-minute limit. In the illustrative review sample, 20/20 cases link the original source version to the reviewer disposition. The incident commander and accounts-payable supervisor can each suspend traffic. |
-| Conditions and expiry | Authorize the same operating scope for 30 days at up to 200 cases/day and USD 6,000 total operating cost for the period. Review the oldest pending case daily. Stop automated drafting on confirmed unauthorized access, an unauthorized action or a critical material error. |
-| Residual risk and next decision | Source citations can be valid while their interpretation is wrong. Two observed unsupported drafts place this sample at the ceiling. Keep full human review and weekly independent sampling. An additional tenant or language returns for its own classification, evidence and budget. |
-| Decision rights exercised | Finance validates cost, the platform owner accepts support, CISO verifies isolation, independent assurance signs evidence sufficiency and the COO accepts residual risk for the stated scope. Record actual names, dates, signature references and decision expiry in the private deployment. |
+| Cost of an accepted assisted case, including the work spent on the 100 manual cases | $5,400 ÷ 900 = **$6.00**. Finance set the ceiling at $6.40, or 80% of the $8.00 manual baseline. |
+| Cost of closing a case by either route | $5,400 ÷ 1,000 = **$5.40**. Every eligible case closed. |
+| Cost difference at 1,000 comparable cases a month | $8,000 manual cost less $5,400 operating cost = **$2,600 per month** before setup costs. Record where the released hours go. Finance can recognize a cash saving once spending actually falls. |
 
-### How to read the two unit costs
+The 90% acceptance rate and the $6.00 unit cost support keeping this queue open. [Cost definition and ledger](../01-pillar-blueprints/01-process-and-finops.md)
 
-USD 6.00 answers what the organization spent to obtain one accepted AI-assisted case, including the cost of rejects and fallback. USD 5.40 answers what it spent per closed case across both routes. A director comparing another pilot needs both denominators, plus manual cost for a matched population. [Full cost ledger](../01-pillar-blueprints/01-process-and-finops.md)
+## Why the approval stays narrow
 
-### If one number changes
+Two of 200 substantive drafts contained a material claim that their sources did not support. That is exactly the 1% limit. A real citation can lead to the correct document and still misrepresent what it says. Keep human review on every case and have independent reviewers sample drafts weekly. Three such drafts out of 200 would take the error rate to 1.5% and hold the release. The workflow owner would send cases through the manual queue while the team investigated. Reopening would require fresh evidence and a new human decision.
 
-Three unsupported drafts in 200 would give **1.5%**, above the approved 1% ceiling. The release manager would hold promotion even at USD 6.00 per accepted outcome. The workflow owner would retain the manual path while the team investigates source selection and reviewer adjudication. A successful rerun still needs a new human decision. [Runnable gate and evidence fixture](../04-policy-as-code-templates/README.md)
+The qualification sample recorded no severe toxicity in 200 reviewed outputs. Each of the eight other required checks, including tenant isolation and human approval, recorded zero failures in 20 cases. During the fallback drill, all 40 open cases reached the manual queue exactly once in 12 minutes, inside the 15-minute limit. In a separate review of 20 cases, all 20 could be traced from the original source version to the analyst’s final decision. [Release checks and synthetic evidence](../04-policy-as-code-templates/README.md)
+
+## Terms for the next shift
+
+The accounts-payable supervisor checks the oldest pending case daily. The supervisor and the incident commander can each suspend drafting. Confirmed unauthorized access, an unauthorized action or a critical material error stops the service for the affected queue. An additional tenant or language needs its own risk assessment, evidence and budget.
+
+**Approval record FIN-EX-01, revision 7.** The scope is `demo/invoice-exception-draft`. In a client deployment, the controller identifies the exact candidate by its cryptographic digest and independent assurance supplies the digest of the approved test suite. Finance validates the cost, the platform owner accepts support, the CISO verifies isolation, and independent assurance signs off on the evidence. The COO accepts the remaining business risk for this scope. File the names, signatures, decision date and expiry in the client’s private record.
